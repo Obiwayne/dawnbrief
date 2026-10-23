@@ -9,4 +9,6 @@
 - `dawnbrief preview` done: 13 tests pass. Sample Monday (6 meetings, 38 overnight emails) builds a 973-character brief.
 - Real run: 5 live feeds (3 through local RSSHub, 2 public) plus the sample calendar and inbox, 8.1 s, 1,156 characters, no failed feeds.
 - Code done: 2026-10-23 20:08
+- Guide, cover and brief images, glass-look 16:9 and 9:16 videos (voice transcribes back, -14.0 LUFS), 6 Instagram slides and posts done: 2026-10-23 20:32
+- Total build time: 20:00 to 20:32
 - Repo: local only, waiting for the owner's OK to publish as Obiwayne/dawnbrief.
