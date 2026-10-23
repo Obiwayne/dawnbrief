@@ -1,0 +1,60 @@
+# Miniflux (feed reader with an API) + RSSHub (feeds for sites that have none), for Dawnbrief's news section.
+# Based on the official files: miniflux/v2 contrib/docker-compose/basic.yml and DIYgod/RSSHub docker-compose.yml
+# (RSSHub's optional headless browser left out to keep it light).
+# NOT YET RUN BY US: this PC had no Docker. Copy .env.example to .env and set real passwords first.
+#
+# Grok Bot runs on its own cloud computer, so it can only reach Miniflux if this runs on a server with a public
+# HTTPS address (put a reverse proxy such as Caddy in front). For dawnbrief preview on your own PC, localhost is fine.
+
+services:
+  miniflux:
+    image: miniflux/miniflux:latest
+    restart: always
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://miniflux:${POSTGRES_PASSWORD}@db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME=${MINIFLUX_ADMIN_USERNAME}
+      - ADMIN_PASSWORD=${MINIFLUX_ADMIN_PASSWORD}
+      - POLLING_FREQUENCY=60
+
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=miniflux
+    volumes:
+      - miniflux-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "miniflux"]
+      interval: 10s
+      start_period: 30s
+
+  rsshub:
+    image: diygod/rsshub
+    restart: always
+    ports:
+      - "127.0.0.1:1200:1200"
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: "redis://redis:6379/"
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    restart: always
+    volumes:
+      - redis-data:/data
+
+volumes:
+  miniflux-db:
+  redis-data:

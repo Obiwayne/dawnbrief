@@ -1,0 +1,9 @@
+[project]
+name = "dawnbrief"
+version = "0.1.0"
+description = "Preview a 7am brief of your calendar, overnight email and news, and a Grok Bot skill to send it daily."
+requires-python = ">=3.10"
+license = "MIT"
+
+[project.scripts]
+dawnbrief = "dawnbrief.__main__:main"

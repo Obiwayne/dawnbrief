@@ -1,0 +1,8 @@
+{
+  "name": "dawnbrief-rsshub-local",
+  "private": true,
+  "type": "module",
+  "description": "Run RSSHub routes locally without Docker, for dawnbrief preview",
+  "scripts": { "start": "node serve.mjs" },
+  "dependencies": { "rsshub": "1.0.0-master.3c11932" }
+}
